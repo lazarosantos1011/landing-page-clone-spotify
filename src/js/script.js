@@ -1,35 +1,32 @@
-const resultArtist = document.getElementById("result-artist");
-const playlistContainer = document.getElementById("result-playlists");
-const searchInput = document.getElementById("search-input");
+const searchInput = document.getElementById('search-input');
+const resultArtist = document.getElementById('result-artist');
+const resultPlaylist = document.getElementById('result-playlists');
 
 function requestApi(searchTerm) {
-  fetch(`http://localhost:3000/artists?name_like=${searchTerm}`)
+  const url = `http://localhost:3000/artists?name_like=${searchTerm}`;
+  fetch(url)
     .then((response) => response.json())
     .then((results) => displayResults(results));
 }
 
 function displayResults(results) {
-  hidePlaylists();
-  const artistImage = document.getElementById("artist-img");
-  const artistName = document.getElementById("artist-name");
+  resultPlaylist.classList.add('hidden');
+  const artistImage = document.getElementById('artist-img');
+  const artistName = document.getElementById('artist-name');
 
   results.forEach((element) => {
-    artistImage.src = element.urlImg;
     artistName.innerText = element.name;
+    artistImage.src = element.urlImg;
   });
-  resultArtist.classList.remove("hidden");
+  resultArtist.classList.remove('hidden');
 }
 
-function hidePlaylists() {
-  playlistContainer.classList.add("hidden");
-}
-
-searchInput.addEventListener("input", function () {
+searchInput.addEventListener('input', function () {
   const searchTerm = searchInput.value.toLowerCase();
-  if (searchTerm === "") {
-    resultArtist.classList.add("hidden");
-    playlistContainer.classList.remove("hidden");
+  if (searchTerm === '') {
+    resultArtist.classList.add('hidden');
+    playlistContainer.classList.remove('hidden');
     return;
   }
   requestApi(searchTerm);
-});
+})
